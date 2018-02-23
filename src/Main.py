@@ -50,7 +50,7 @@ def main ( ):
 
         else:
             file = arg;
-
+    var_sh = "MinimumRemainingValue"
     trail = Trail.Trail();
 
     if file == "":

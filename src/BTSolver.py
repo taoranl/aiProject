@@ -78,6 +78,7 @@ class BTSolver:
     """
     def norvigCheck ( self ):
         return False
+    
 
     """
          Optional TODO: Implement your own advanced Constraint Propagation
@@ -107,7 +108,14 @@ class BTSolver:
         Return: The unassigned variable with the smallest domain
     """
     def getMRV ( self ):
-        return None
+        temp = self.getfirstUnassignedVariable()
+                
+        for i in self.network.variables:
+            if not (i.isAssigned()) and i.size() < temp.size():
+                temp = i
+                
+        return temp
+                
 
     """
         Part 2 TODO: Implement the Degree Heuristic
