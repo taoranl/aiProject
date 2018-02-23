@@ -52,17 +52,22 @@ def main ( ):
             file = arg;
             
     # ---------------------------------delete!
+    # test FC
+    cc = "forwardChecking"
+    
     # test MRV
     var_sh = "MinimumRemainingValue"
+    # test LCV
+    val_sh = "LeastConstrainingValue"
+    
+    # test by using own game board
+    file = "board_test_large.txt"
+  
      # ---------------------------------delete!
     
     trail = Trail.Trail();
     
-    # ---------------------------------delete!
-    # test by using own game board
-    file = "board_test1.txt"
-    # ---------------------------------delete!
-     
+   
      
     if file == "":
         sudokudata = SudokuBoard.SudokuBoard( 3, 3, 7 )

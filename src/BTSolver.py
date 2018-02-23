@@ -6,6 +6,8 @@ import Constraint
 import ConstraintNetwork
 import time
 
+from collections import defaultdict
+
 class BTSolver:
 
     # ==================================================================
@@ -50,7 +52,7 @@ class BTSolver:
         # recent assigned variable & value
         recent_pair = self.trail.trailStack[-1]
         recent_variable = recent_pair[0]
-        recent_value = recent_variable.getAssigment()
+        recent_value = recent_variable.getAssignment()
         
         for i in self.network.getNeighborsOfVariable(recent_variable):
             if i.isAssigned() and i.getAssignment()==recent_value:
@@ -109,6 +111,9 @@ class BTSolver:
     """
     def getMRV ( self ):
         temp = self.getfirstUnassignedVariable()
+        
+        if temp == None:
+            return temp
                 
         for i in self.network.variables:
             if not (i.isAssigned()) and i.size() < temp.size():
@@ -163,7 +168,15 @@ class BTSolver:
                 The LCV is first and the MCV is last
     """
     def getValuesLCVOrder ( self, v ):
-        return None
+        values = v.domain.values
+        
+        frequent_dict = defaultdict(int)        
+        for var in self.network.getNeighborsOfVariable(v):
+            for value in var.domain.values:
+                frequent_dict[value] += 1
+        
+        return sorted(values, key = (lambda x:frequent_dict[x]))
+            
 
     """
          Optional TODO: Implement your own advanced Value Heuristic
