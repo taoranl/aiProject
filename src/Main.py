@@ -52,22 +52,22 @@ def main ( ):
             file = arg;
             
             
-# =============================================================================
-#     # ------------test cases-----------------
-#     # test FC
-#     cc = "forwardChecking"
+#    # ------------test cases-----------------
+#    # test FC
+#    cc = "forwardChecking"
 #     
-#     # test MRV
-#     var_sh = "MinimumRemainingValue"
-#     # test LCV
-#     val_sh = "LeastConstrainingValue"
+#    # test MRV
+#    var_sh = "MinimumRemainingValue"
+#    # test LCV
+#    val_sh = "LeastConstrainingValue"
 #     
-#     # test by using own game board
-#     file = "board_test1.txt" # Trail Pushes: 3252, Backtracks: 116
-#     #file = "board_test_large.txt" # Trail Pushes: 2066, Backtracks: 51
-#   
-#      # -------------------------------------
-# =============================================================================
+#    # test by using own game board
+##    file = "board_test1.txt" # Trail Pushes: 3252, Backtracks: 116
+##    file = "board_test_large.txt" # Trail Pushes: 2066, Backtracks: 51
+##    file = "board_test3.txt"
+##    file = "board_test_small.txt"
+#       
+#    # -------------------------------------
     
     trail = Trail.Trail();
     

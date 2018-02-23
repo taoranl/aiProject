@@ -49,19 +49,20 @@ class BTSolver:
         Return: true is assignment is consistent, false otherwise
     """
     def forwardChecking ( self ):
-        # recent assigned variable & value
+        # recent assigned variable & value        
         recent_pair = self.trail.trailStack[-1]
         recent_variable = recent_pair[0]
         recent_value = recent_variable.getAssignment()
-        
+
         # iterate through all neighbors of the recent assigned variable
         for i in self.network.getNeighborsOfVariable(recent_variable):
             if i.isAssigned() and i.getAssignment()==recent_value:
                 return False # contradiction! constraint is no longer consistent
             else:
-                self.trail.push( i )
-                # eliminate the assigned value from neighbors' domain
-                i.removeValueFromDomain(recent_value) 
+                if recent_value in i.domain.values:
+                    self.trail.push( i )
+                    # eliminate the assigned value from neighbors' domain
+                    i.removeValueFromDomain(recent_value) 
                 
         return True
 
@@ -112,6 +113,13 @@ class BTSolver:
         Return: The unassigned variable with the smallest domain
     """
     def getMRV ( self ):
+        # eliminate initial assigned values from their neighbors' domains
+        if self.trail.trailStack == []:
+            for i in self.network.variables:
+                if i.isAssigned():
+                    for j in self.network.getNeighborsOfVariable(i):
+                        j.removeValueFromDomain(i.getValues()[0]) 
+                        
         # first unassigned variable        
         temp = self.getfirstUnassignedVariable()
         
@@ -119,10 +127,10 @@ class BTSolver:
             return temp # equals None if everything is assined
         
         # iterate through all variables
-        for i in self.network.variables:
+        for i in self.network.variables:            
             if not (i.isAssigned()) and i.size() < temp.size():
                 temp = i # update the variable with the smaller domain size
-                
+        
         return temp
                 
 
