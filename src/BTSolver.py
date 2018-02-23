@@ -54,11 +54,13 @@ class BTSolver:
         recent_variable = recent_pair[0]
         recent_value = recent_variable.getAssignment()
         
+        # iterate through all neighbors of the recent assigned variable
         for i in self.network.getNeighborsOfVariable(recent_variable):
             if i.isAssigned() and i.getAssignment()==recent_value:
-                return False
+                return False # contradiction! constraint is no longer consistent
             else:
                 self.trail.push( i )
+                # eliminate the assigned value from neighbors' domain
                 i.removeValueFromDomain(recent_value) 
                 
         return True
@@ -110,14 +112,16 @@ class BTSolver:
         Return: The unassigned variable with the smallest domain
     """
     def getMRV ( self ):
+        # first unassigned variable        
         temp = self.getfirstUnassignedVariable()
         
         if temp == None:
-            return temp
-                
+            return temp # equals None if everything is assined
+        
+        # iterate through all variables
         for i in self.network.variables:
             if not (i.isAssigned()) and i.size() < temp.size():
-                temp = i
+                temp = i # update the variable with the smaller domain size
                 
         return temp
                 
@@ -170,11 +174,13 @@ class BTSolver:
     def getValuesLCVOrder ( self, v ):
         values = v.domain.values
         
-        frequent_dict = defaultdict(int)        
+        # dictionary of the frequency of all single value appears in the constraints
+        frequent_dict = defaultdict(int)
+        
         for var in self.network.getNeighborsOfVariable(v):
             for value in var.domain.values:
                 frequent_dict[value] += 1
-        
+        # sort the values of input variable v by the frequency
         return sorted(values, key = (lambda x:frequent_dict[x]))
             
 

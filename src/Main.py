@@ -51,19 +51,23 @@ def main ( ):
         else:
             file = arg;
             
-    # ---------------------------------delete!
-    # test FC
-    cc = "forwardChecking"
-    
-    # test MRV
-    var_sh = "MinimumRemainingValue"
-    # test LCV
-    val_sh = "LeastConstrainingValue"
-    
-    # test by using own game board
-    file = "board_test_large.txt"
-  
-     # ---------------------------------delete!
+            
+# =============================================================================
+#     # ------------test cases-----------------
+#     # test FC
+#     cc = "forwardChecking"
+#     
+#     # test MRV
+#     var_sh = "MinimumRemainingValue"
+#     # test LCV
+#     val_sh = "LeastConstrainingValue"
+#     
+#     # test by using own game board
+#     file = "board_test1.txt" # Trail Pushes: 3252, Backtracks: 116
+#     #file = "board_test_large.txt" # Trail Pushes: 2066, Backtracks: 51
+#   
+#      # -------------------------------------
+# =============================================================================
     
     trail = Trail.Trail();
     
