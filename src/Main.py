@@ -63,7 +63,7 @@ def main ( ):
     var_sh = "MRVwithTieBreaker"
     # test LCV
     val_sh = "LeastConstrainingValue"
-#    file = "board_test7.txt"
+    file = "board_test7.txt"
 #    file = "board_test557.txt"
 #     
 #    # test by using own game board

@@ -136,14 +136,7 @@ class BTSolver:
 
         Return: The unassigned variable with the smallest domain
     """
-    def getMRV ( self ):
-        # eliminate initial assigned values from their neighbors' domains
-        if self.trail.trailStack == []:
-            for i in self.network.variables:
-                if i.isAssigned():
-                    for j in self.network.getNeighborsOfVariable(i):
-                        j.removeValueFromDomain(i.getValues()[0]) 
-                        
+    def getMRV ( self ):                        
         # first unassigned variable        
         temp = self.getfirstUnassignedVariable()
         
@@ -186,14 +179,7 @@ class BTSolver:
         Return: The unassigned variable with, first, the smallest domain
                 and, second, the most unassigned neighbors
     """
-    def MRVwithTieBreaker ( self ):
-        # eliminate initial assigned values from their neighbors' domains
-        if self.trail.trailStack == []:
-            for i in self.network.variables:
-                if i.isAssigned():
-                    for j in self.network.getNeighborsOfVariable(i):
-                        j.removeValueFromDomain(i.getValues()[0]) 
-                        
+    def MRVwithTieBreaker ( self ):                        
         # first unassigned variable        
         temp = self.getfirstUnassignedVariable()
         
