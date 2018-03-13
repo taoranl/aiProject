@@ -55,17 +55,22 @@ def main ( ):
 #    # ------------test cases-----------------
 #    # test FC
 #    cc = "forwardChecking"
-#     
-#    # test MRV
+    # test NOR
+    cc = "norvigCheck"
+     
+    # test MRV
 #    var_sh = "MinimumRemainingValue"
-#    # test LCV
-#    val_sh = "LeastConstrainingValue"
+    var_sh = "MRVwithTieBreaker"
+    # test LCV
+    val_sh = "LeastConstrainingValue"
+#    file = "board_test7.txt"
+#    file = "board_test557.txt"
 #     
 #    # test by using own game board
-##    file = "board_test1.txt" # Trail Pushes: 3252, Backtracks: 116
-##    file = "board_test_large.txt" # Trail Pushes: 2066, Backtracks: 51
-##    file = "board_test3.txt"
-##    file = "board_test_small.txt"
+#    file = "board_test1.txt" # Trail Pushes: 3252, Backtracks: 116
+#    file = "board_test_large.txt" # Trail Pushes: 2066, Backtracks: 51
+#    file = "board_test3.txt"
+#    file = "board_test_small.txt"
 #       
 #    # -------------------------------------
     
@@ -74,7 +79,7 @@ def main ( ):
    
      
     if file == "":
-        sudokudata = SudokuBoard.SudokuBoard( 3, 3, 7 )
+        sudokudata = SudokuBoard.SudokuBoard( 3,3,7 )
         print(sudokudata)
 
         solver = BTSolver.BTSolver( sudokudata, trail, val_sh, var_sh, cc )

@@ -49,22 +49,30 @@ class BTSolver:
         Return: true is assignment is consistent, false otherwise
     """
     def forwardChecking ( self ):
-        # recent assigned variable & value        
-        recent_pair = self.trail.trailStack[-1]
-        recent_variable = recent_pair[0]
-        recent_value = recent_variable.getAssignment()
-
-        # iterate through all neighbors of the recent assigned variable
-        for i in self.network.getNeighborsOfVariable(recent_variable):
-            if i.isAssigned() and i.getAssignment()==recent_value:
-                return False # contradiction! constraint is no longer consistent
-            else:
-                if recent_value in i.domain.values:
-                    self.trail.push( i )
-                    # eliminate the assigned value from neighbors' domain
-                    i.removeValueFromDomain(recent_value) 
+        for v in self.network.variables:
+            if v.isAssigned():
+                v_value = v.getValues()[0]
+                # iterate through all neighbors of the recent assigned variable
+                for i in self.network.getNeighborsOfVariable(v):
+                    if i.isAssigned() and i.getAssignment()==v_value:
+                        return False # contradiction! constraint is no longer consistent
+                    else:
+                        if v_value in i.domain.values:
+                            self.trail.push( i )
+                            # eliminate the assigned value from neighbors' domain
+                            i.removeValueFromDomain(v_value)
+                
                 
         return True
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     """
         Part 2 TODO: Implement both of Norvig's Heuristics
@@ -81,8 +89,24 @@ class BTSolver:
         Note: remember to trail.push variables before you change their domain
         Return: true is assignment is consistent, false otherwise
     """
-    def norvigCheck ( self ):
-        return False
+    def norvigCheck ( self ):        
+        for v in self.network.variables:
+            if v.isAssigned():
+                v_value = v.getValues()[0]
+                # iterate through all neighbors of the recent assigned variable
+                for i in self.network.getNeighborsOfVariable(v):
+                    if i.isAssigned() and i.getAssignment()==v_value:
+                        return False # contradiction! constraint is no longer consistent
+                    else:
+                        if v_value in i.domain.values:
+                            self.trail.push( i )
+                            # eliminate the assigned value from neighbors' domain
+                            i.removeValueFromDomain(v_value)
+                            
+                            if len(i.domain.values) == 1:
+                                self.trail.push( i )
+                                i.assignValue(i.domain.values[0])
+        return True
     
 
     """
@@ -140,7 +164,20 @@ class BTSolver:
         Return: The unassigned variable with the most unassigned neighbors
     """
     def getDegree ( self ):
-        return None
+        result = None
+#        maxi = 3 * (self.gb.N - 1) - (self.gb.p - 1) - (self.gb.q - 1)
+        max_deg = -1
+        
+        for i in self.network.variables:
+            if not (i.isAssigned()):
+                i_deg = 0
+                for j in self.network.getNeighborsOfVariable(i):
+                    if not j.isAssigned():
+                        i_deg += 1
+                if i_deg > max_deg:
+                    max_deg = i_deg
+                    result = i
+        return result
 
     """
         Part 2 TODO: Implement the Minimum Remaining Value Heuristic
@@ -150,7 +187,44 @@ class BTSolver:
                 and, second, the most unassigned neighbors
     """
     def MRVwithTieBreaker ( self ):
-        return None
+        # eliminate initial assigned values from their neighbors' domains
+        if self.trail.trailStack == []:
+            for i in self.network.variables:
+                if i.isAssigned():
+                    for j in self.network.getNeighborsOfVariable(i):
+                        j.removeValueFromDomain(i.getValues()[0]) 
+                        
+        # first unassigned variable        
+        temp = self.getfirstUnassignedVariable()
+        
+        if temp == None:
+            return temp # equals None if everything is assined
+        
+        # iterate through all variables
+        for i in self.network.variables:            
+            if not (i.isAssigned()) and i.size() < temp.size():
+                temp = i # update the variable with the smaller domain size
+        
+        
+        result = temp
+        smallest_domain_size = result.size()
+        max_deg = 0        
+        for j in self.network.getNeighborsOfVariable(result):
+            if not j.isAssigned():
+                max_deg += 1
+                
+        for i in self.network.variables:
+            if not (i.isAssigned()) and i.size() == smallest_domain_size and i!=result:
+                i_deg = 0
+                for j in self.network.getNeighborsOfVariable(i):
+                    if not j.isAssigned():
+                        i_deg += 1
+                if i_deg > max_deg:
+                    max_deg = i_deg
+                    result = i
+
+        return result
+                
 
     """
          Optional TODO: Implement your own advanced Variable Heuristic
